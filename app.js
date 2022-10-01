@@ -8,7 +8,12 @@ app.get("/", (req, res) => {
   const url = "https://api.weatherapi.com/v1/current.json?key=bc2d984055fb45e3b6d134335220110&q=Oulu&aqi=no";
 
   https.get(url, (response) =>{
-    console.log(response.statusCode);
+    response.on("data",function(data){
+      const weatherData = JSON.parse(data);
+      console.log(weatherData);
+      const temperature = weatherData.current.temp_c;
+      res.send("The temperature in Oulu, Finland is " + "<em>" + temperature + "</em>" + " degree celcius. ");
+    } )
   } )
 
 })
